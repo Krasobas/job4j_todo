@@ -11,11 +11,11 @@ public interface TaskService {
 
     Collection<TaskDto> listAll(String filter);
 
-    Optional<TaskDto> save(TaskDto TaskDto);
+    Optional<TaskDto> save(TaskDto taskDto);
 
     Optional<TaskDto> findById(Long id);
 
-    boolean update(TaskDto TaskDto);
+    boolean update(TaskDto taskDto);
 
     boolean setCompleted(Long id, boolean completed);
 

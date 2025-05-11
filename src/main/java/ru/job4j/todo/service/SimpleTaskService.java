@@ -40,8 +40,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Optional<TaskDto> save(TaskDto task) {
-        Task entity = mapper.getEntityFromDto(task);
+    public Optional<TaskDto> save(TaskDto taskDto) {
+        Task entity = mapper.getEntityFromDto(taskDto);
         return repository.save(entity)
                 .map(mapper::getModelFromEntity);
     }
@@ -53,8 +53,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public boolean update(TaskDto task) {
-        Task entity = mapper.getEntityFromDto(task);
+    public boolean update(TaskDto taskDto) {
+        Task entity = mapper.getEntityFromDto(taskDto);
         return repository.update(entity);
     }
 
