@@ -34,8 +34,7 @@ public class CustomErrorController implements ErrorController {
         return "errors/error-500";
     }
 
-    // Required for Spring Boot compatibility (optional in newer versions)
     public String getErrorPath() {
-        return "/error";
+        return "errors/error";
     }
 }
