@@ -9,12 +9,7 @@
 </head>
 <body>
 <div class="container py-4">
-    <header class="pb-3 mb-4 border-bottom">
-        <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-sm btn-outline-secondary mb-2">
-            <i class="bi bi-arrow-left"></i> Back to task details
-        </a>
-        <h1 class="fs-4">Edit Task</h1>
-    </header>
+    <div th:replace="~{components/header :: header(title='Edit Task', taskId=${task.id})}"></div>
 
     <div class="card">
         <div class="card-body">

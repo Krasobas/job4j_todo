@@ -1,4 +1,4 @@
-package ru.job4j.todo.repository;
+package ru.job4j.todo.repository.task;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
@@ -73,9 +73,14 @@ public class HibernateTaskRepository implements TaskRepository {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            session.update(task);
+            int updated = session.createQuery("UPDATE Task SET name = :fName, description = :fDescription, completed = :fCompleted WHERE id = :fId")
+                    .setParameter("fName", task.getName())
+                    .setParameter("fDescription", task.getDescription())
+                    .setParameter("fCompleted", task.getCompleted())
+                    .setParameter("fId", task.getId())
+                    .executeUpdate();
             session.getTransaction().commit();
-            return true;
+            return updated > 0;
         } catch (Exception e) {
             session.getTransaction().rollback();
             log.error(e.getMessage(), e);

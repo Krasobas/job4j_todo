@@ -148,6 +148,12 @@ mvn test
 ##### Main Page
 ![Main Page](img/main_page.png)
 
+##### Log in Page
+![Log in Page](img/login_page.png)
+
+##### Registration Page
+![Registration Page](img/registration_page.png)
+
 ##### All tasks
 ![All tasks](img/all_tasks.png)
 

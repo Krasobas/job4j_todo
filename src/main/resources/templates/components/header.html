@@ -1,0 +1,32 @@
+<header th:fragment="header(title, taskId)" class="pb-3 mb-4 border-bottom">
+    <!-- Вариант 1: Когда нет левой кнопки -->
+    <div th:unless="${#strings.equals(title, 'Add New Task') or #strings.equals(title, 'Task Details') or (#strings.equals(title, 'Edit Task') and taskId != null)}"
+         class="d-flex justify-content-between align-items-center">
+        <h1 class="fs-4 m-0" th:text="${title}">Title</h1>
+        <h1 class="fs-4 m-0" th:text="${taskId}">Title</h1>
+        <a th:href="@{/users/logout}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+
+    <div th:if="${#strings.equals(title, 'Add New Task') or #strings.equals(title, 'Task Details') or (#strings.equals(title, 'Edit Task') and taskId != null)}">
+        <h1 class="fs-4 m-0 mb-3" th:text="${title}">Title</h1>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a th:if="${#strings.equals(title, 'Add New Task') or #strings.equals(title, 'Task Details')}"
+                   th:href="@{/tasks}"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to tasks
+                </a>
+                <a th:if="${#strings.equals(title, 'Edit Task') and taskId != null}"
+                   th:href="@{/tasks/{id}(id=${taskId})}"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to task details
+                </a>
+            </div>
+            <a th:href="@{/users/logout}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+</header>

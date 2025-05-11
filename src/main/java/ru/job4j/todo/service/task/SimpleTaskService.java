@@ -1,4 +1,4 @@
-package ru.job4j.todo.service;
+package ru.job4j.todo.service.task;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.dto.TaskDto;
 import ru.job4j.todo.mapstruct.TaskMapper;
 import ru.job4j.todo.model.Task;
-import ru.job4j.todo.repository.TaskRepository;
+import ru.job4j.todo.repository.task.TaskRepository;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -54,7 +54,9 @@ public class SimpleTaskService implements TaskService {
 
     @Override
     public boolean update(TaskDto taskDto) {
+        log.info(taskDto);
         Task entity = mapper.getEntityFromDto(taskDto);
+        log.info(entity);
         return repository.update(entity);
     }
 

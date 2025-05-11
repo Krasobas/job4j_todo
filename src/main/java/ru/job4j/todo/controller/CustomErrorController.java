@@ -1,4 +1,4 @@
-package ru.job4j.todo.controller.error;
+package ru.job4j.todo.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package ru.job4j.todo.controller.task;
+package ru.job4j.todo.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.dto.TaskDto;
-import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.task.TaskService;
 
 
 import java.util.Optional;

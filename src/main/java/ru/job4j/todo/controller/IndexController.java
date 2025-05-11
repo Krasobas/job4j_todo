@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.task.TaskService;
 
 @JBossLog
 @Controller
