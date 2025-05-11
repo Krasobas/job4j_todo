@@ -14,7 +14,8 @@ This project is a simple Todo application built with Spring Boot, Hibernate, Thy
 * [Application Structure](#application-structure)
 * [Configuration](#configuration)
 * [Testing](#testing)
-* [Contributing](#contributing)
+* [Screenshots](#screenshots)
+* [Contact](#contact)
 
 ## Features
 
@@ -98,16 +99,18 @@ The database schema for the `tasks` table is managed by Liquibase and is defined
 ```sql
 CREATE TABLE tasks (
    id SERIAL PRIMARY KEY,
+   name TEXT,
    description TEXT,
    created TIMESTAMP,
-   done BOOLEAN
+   completed BOOLEAN
 );
 ```
 
 * `id`: Unique identifier for the task (auto-incrementing primary key).
+* `name`: Title of the task.
 * `description`: Text describing the task.
 * `created`: Timestamp indicating when the task was created.
-* `done`: Boolean indicating whether the task is completed (`true`) or not (`false`).
+* `completed`: Boolean indicating whether the task is completed (`true`) or not (`false`).
 
 Liquibase is configured in the `pom.xml` file to automatically create and update the database schema based on the changesets defined in the `/db/changelog` directory. The specific configuration file used by Liquibase is determined by the active Spring profile (`test` or `production`), as defined in the `<profiles>` section of the `pom.xml`.
 
@@ -117,7 +120,7 @@ The application follows a three-layer architecture:
 
 * **Controllers:** Located in the `src/main/java/ru/job4j/todo/controller` directory. These classes handle user requests and interact with the Service layer.
 * **Services:** Located in the `src/main/java/ru/job4j/todo/service` directory. These classes contain the business logic of the application and interact with the Persistence layer.
-* **Persistence:** Located in the `src/main/java/ru/job4j/todo/store` directory. These classes are responsible for data access and interact with the database using Hibernate.
+* **Persistence:** Located in the `src/main/java/ru/job4j/todo/repository` directory. These classes are responsible for data access and interact with the database using Hibernate.
 
 The `SessionFactory` is created as a Spring Bean in the main application class (`src/main/java/ru/job4j/todo/Main.java`) using the `@Bean` annotation. The `TaskStore` class receives the `SessionFactory` instance through its constructor, enabling database interactions.
 
@@ -140,8 +143,36 @@ The project includes basic integration tests located in the `src/test/java/ru/jo
 mvn test
 ```
 
+### Screenshots
 
-### Contributing
+##### Main Page
+![Main Page](img/main_page.png)
 
-Contributions to this project are welcome. Please feel free to submit pull requests with bug fixes or new features. For major changes, please open an issue first to discuss the proposed changes.
+##### All tasks
+![All tasks](img/all_tasks.png)
+
+##### Completed tasks
+![Completed tasks](img/completed_tasks.png)
+
+##### New tasks
+![New tasks](img/new_tasks.png)
+
+##### Add task
+![Add task](img/add_task.png)
+
+##### View task
+![View task](img/view_task.png)
+
+##### Edit task
+![Edit task](img/edit_task.png)
+
+##### Delete task
+![Delete task](img/delete_task.png)
+
+
+### Contact
+
+Email: vasiliy.krasov.job@gmail.com
+
+Telegram: @krasobas
 
