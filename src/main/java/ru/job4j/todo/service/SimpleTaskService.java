@@ -3,6 +3,8 @@ package ru.job4j.todo.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
 import org.springframework.stereotype.Service;
+import ru.job4j.todo.dto.TaskDto;
+import ru.job4j.todo.mapstruct.TaskMapper;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.repository.TaskRepository;
 
@@ -15,33 +17,45 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleTaskService implements TaskService {
     private final TaskRepository repository;
+    private final TaskMapper mapper;
 
     @Override
-    public Collection<Task> listAll() {
-        return repository.findAll();
+    public Collection<TaskDto> listAll() {
+
+        return repository.findAll()
+                .stream()
+                .map(mapper::getModelFromEntity)
+                .toList();
     }
 
     @Override
-    public Collection<Task> listAll(String filter) {
+    public Collection<TaskDto> listAll(String filter) {
         if (Objects.isNull(filter) || filter.isBlank() || "all".equals(filter)) {
             return listAll();
         }
-        return repository.findByCompleted("completed".equals(filter));
+        return repository.findByCompleted("completed".equals(filter))
+                .stream()
+                .map(mapper::getModelFromEntity)
+                .toList();
     }
 
     @Override
-    public Optional<Task> save(Task task) {
-        return repository.save(task);
+    public Optional<TaskDto> save(TaskDto task) {
+        Task entity = mapper.getEntityFromDto(task);
+        return repository.save(entity)
+                .map(mapper::getModelFromEntity);
     }
 
     @Override
-    public Optional<Task> findById(Long id) {
-        return repository.findById(id);
+    public Optional<TaskDto> findById(Long id) {
+        return repository.findById(id)
+                .map(mapper::getModelFromEntity);
     }
 
     @Override
-    public boolean update(Task task) {
-        return repository.update(task);
+    public boolean update(TaskDto task) {
+        Task entity = mapper.getEntityFromDto(task);
+        return repository.update(entity);
     }
 
     @Override

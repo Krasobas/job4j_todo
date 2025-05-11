@@ -5,7 +5,7 @@ import lombok.extern.jbosslog.JBossLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.todo.model.Task;
+import ru.job4j.todo.dto.TaskDto;
 import ru.job4j.todo.service.TaskService;
 
 
@@ -28,13 +28,13 @@ public class TaskController {
 
     @GetMapping("/new")
     public String getCreateForm(Model model) {
-        model.addAttribute("task", new Task());
+        model.addAttribute("task", new TaskDto());
         return "tasks/task-form";
     }
 
     @GetMapping("/{id}/edit")
     public String getEditForm(@PathVariable("id") Long id, Model model) {
-        Optional<Task> task = service.findById(id);
+        Optional<TaskDto> task = service.findById(id);
         if (task.isEmpty()) {
             model.addAttribute("error", "Task not found.");
             return "redirect:/error/404";
@@ -44,8 +44,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Task task, Model model) {
-        Optional<Task> created = service.save(task);
+    public String create(@ModelAttribute TaskDto task, Model model) {
+        Optional<TaskDto> created = service.save(task);
         log.infof("created: %s", created);
         if (created.isEmpty()) {
             model.addAttribute("error", "Something went wrong. Please try again.");
@@ -56,7 +56,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public String getById(@PathVariable("id") Long id, Model model) {
-        Optional<Task> task = service.findById(id);
+        Optional<TaskDto> task = service.findById(id);
         if (task.isEmpty()) {
             model.addAttribute("error", "Task not found.");
             return "redirect:/error/404";
@@ -86,7 +86,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/update")
-    public String update(@PathVariable Long id, @ModelAttribute Task task, Model model) {
+    public String update(@PathVariable Long id, @ModelAttribute TaskDto task, Model model) {
         log.warnf("before update: %s", task);
         boolean updated = service.update(task);
         if (!updated) {

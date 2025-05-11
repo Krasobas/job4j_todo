@@ -1,21 +1,21 @@
 package ru.job4j.todo.service;
 
-import ru.job4j.todo.model.Task;
+import ru.job4j.todo.dto.TaskDto;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface TaskService {
 
-    Collection<Task> listAll();
+    Collection<TaskDto> listAll();
 
-    Collection<Task> listAll(String filter);
+    Collection<TaskDto> listAll(String filter);
 
-    Optional<Task> save(Task task);
+    Optional<TaskDto> save(TaskDto TaskDto);
 
-    Optional<Task> findById(Long id);
+    Optional<TaskDto> findById(Long id);
 
-    boolean update(Task task);
+    boolean update(TaskDto TaskDto);
 
     boolean setCompleted(Long id, boolean completed);
 
