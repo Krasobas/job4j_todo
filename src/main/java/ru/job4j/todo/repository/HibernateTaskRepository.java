@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 
 @JBossLog
@@ -19,15 +19,19 @@ public class HibernateTaskRepository implements TaskRepository {
 
     @Override
     public Optional<Task> save(Task task) {
-        try (Session session = sf.openSession()) {
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             session.persist(task);
             session.getTransaction().commit();
             return Optional.of(task);
         } catch (Exception e) {
+            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-            return Optional.empty();
+        } finally {
+            session.close();
         }
+        return Optional.empty();
     }
 
     @Override
@@ -38,8 +42,8 @@ public class HibernateTaskRepository implements TaskRepository {
                     .uniqueResultOptional();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     @Override
@@ -48,8 +52,8 @@ public class HibernateTaskRepository implements TaskRepository {
             return session.createQuery("FROM Task", Task.class).list();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return List.of();
         }
+        return Collections.emptyList();
     }
 
     @Override
@@ -60,26 +64,31 @@ public class HibernateTaskRepository implements TaskRepository {
                     .list();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return List.of();
         }
+        return Collections.emptyList();
     }
 
     @Override
     public boolean update(Task task) {
-        try (Session session = sf.openSession()) {
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             session.update(task);
             session.getTransaction().commit();
             return true;
         } catch (Exception e) {
+            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-            return false;
+        } finally {
+            session.close();
         }
+        return false;
     }
 
     @Override
     public boolean setCompleted(Long id, boolean completed) {
-        try (Session session = sf.openSession()) {
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             int updated = session.createQuery("UPDATE Task SET completed = :fCompleted WHERE id = :fId")
                     .setParameter("fId", id)
@@ -88,14 +97,18 @@ public class HibernateTaskRepository implements TaskRepository {
             session.getTransaction().commit();
             return updated > 0;
         } catch (Exception e) {
+            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-            return false;
+        } finally {
+            session.close();
         }
+        return false;
     }
 
     @Override
     public boolean delete(Long id) {
-        try (Session session = sf.openSession()) {
+        Session session = sf.openSession();
+        try {
             session.beginTransaction();
             int deleted = session.createQuery("DELETE FROM Task WHERE id = :fId")
                                 .setParameter("fId", id)
@@ -103,8 +116,11 @@ public class HibernateTaskRepository implements TaskRepository {
             session.getTransaction().commit();
             return deleted > 0;
         } catch (Exception e) {
+            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-            return  false;
+        } finally {
+            session.close();
         }
+        return  false;
     }
 }
