@@ -2,44 +2,40 @@ package ru.job4j.todo.repository.task;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.repository.CrudRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 @JBossLog
 @Repository
 @AllArgsConstructor
 public class HibernateTaskRepository implements TaskRepository {
-    private final SessionFactory sf;
+    private final CrudRepository crudRepository;
 
     @Override
     public Optional<Task> save(Task task) {
-        Session session = sf.openSession();
         try {
-            session.beginTransaction();
-            session.persist(task);
-            session.getTransaction().commit();
+            crudRepository.run(session -> session.persist(task));
             return Optional.of(task);
         } catch (Exception e) {
-            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-        } finally {
-            session.close();
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<Task> findById(Long id) {
-        try (Session session = sf.openSession()) {
-            return session.createQuery("FROM Task WHERE id = :fId", Task.class)
-                    .setParameter("fId", id)
-                    .uniqueResultOptional();
+        try {
+            return crudRepository.optional(
+                    "FROM Task WHERE id = :fId",
+                    Task.class,
+                    Map.of("fId", id)
+            );
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -48,8 +44,8 @@ public class HibernateTaskRepository implements TaskRepository {
 
     @Override
     public Collection<Task> findAll() {
-        try (Session session = sf.openSession()) {
-            return session.createQuery("FROM Task", Task.class).list();
+        try {
+            return crudRepository.query("FROM Task", Task.class);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -58,10 +54,12 @@ public class HibernateTaskRepository implements TaskRepository {
 
     @Override
     public Collection<Task> findByCompleted(boolean completed) {
-        try (Session session = sf.openSession()) {
-            return session.createQuery("FROM Task WHERE completed = :fCompleted", Task.class)
-                    .setParameter("fCompleted", completed)
-                    .list();
+        try {
+            return crudRepository.query(
+                    "FROM Task WHERE completed = :fCompleted",
+                    Task.class,
+                    Map.of("fCompleted", completed)
+            );
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -70,62 +68,48 @@ public class HibernateTaskRepository implements TaskRepository {
 
     @Override
     public boolean update(Task task) {
-        Session session = sf.openSession();
         try {
-            session.beginTransaction();
-            int updated = session.createQuery("UPDATE Task SET name = :fName, description = :fDescription, completed = :fCompleted WHERE id = :fId")
-                    .setParameter("fName", task.getName())
-                    .setParameter("fDescription", task.getDescription())
-                    .setParameter("fCompleted", task.getCompleted())
-                    .setParameter("fId", task.getId())
-                    .executeUpdate();
-            session.getTransaction().commit();
-            return updated > 0;
+            return crudRepository.run(
+                    "UPDATE Task SET name = :fName, description = :fDescription, completed = :fCompleted WHERE id = :fId",
+                    Map.of(
+                            "fName", task.getName(),
+                            "fDescription", task.getDescription(),
+                            "fCompleted", task.getCompleted(),
+                            "fId", task.getId()
+                    )
+            ) > 0;
         } catch (Exception e) {
-            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-        } finally {
-            session.close();
         }
         return false;
     }
 
     @Override
     public boolean setCompleted(Long id, boolean completed) {
-        Session session = sf.openSession();
         try {
-            session.beginTransaction();
-            int updated = session.createQuery("UPDATE Task SET completed = :fCompleted WHERE id = :fId")
-                    .setParameter("fId", id)
-                    .setParameter("fCompleted", completed)
-                    .executeUpdate();
-            session.getTransaction().commit();
-            return updated > 0;
+            return crudRepository.run(
+                    "UPDATE Task SET completed = :fCompleted WHERE id = :fId",
+                    Map.of(
+                            "fId", id,
+                            "fCompleted", completed
+                    )
+            ) > 0;
         } catch (Exception e) {
-            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-        } finally {
-            session.close();
         }
         return false;
     }
 
     @Override
     public boolean delete(Long id) {
-        Session session = sf.openSession();
         try {
-            session.beginTransaction();
-            int deleted = session.createQuery("DELETE FROM Task WHERE id = :fId")
-                                .setParameter("fId", id)
-                                .executeUpdate();
-            session.getTransaction().commit();
-            return deleted > 0;
+            return crudRepository.run(
+                    "DELETE FROM Task WHERE id = :fId",
+                    Map.of("fId", id)
+            ) > 0;
         } catch (Exception e) {
-            session.getTransaction().rollback();
             log.error(e.getMessage(), e);
-        } finally {
-            session.close();
         }
-        return  false;
+        return false;
     }
 }
