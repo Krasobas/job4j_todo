@@ -1,29 +1,23 @@
-package ru.job4j.todo.model;
+package ru.job4j.todo.dto.task;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "tasks")
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskDto {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
     private String description;
-    @CreationTimestamp
     private LocalDateTime created;
     private boolean completed = false;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     public boolean getCompleted() {
         return completed;

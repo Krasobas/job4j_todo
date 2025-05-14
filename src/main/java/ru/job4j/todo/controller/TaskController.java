@@ -5,7 +5,10 @@ import lombok.extern.jbosslog.JBossLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.todo.dto.TaskDto;
+import ru.job4j.todo.dto.task.TaskCreateDto;
+import ru.job4j.todo.dto.task.TaskDto;
+import ru.job4j.todo.dto.task.TaskListingDto;
+import ru.job4j.todo.dto.user.UserSessionDto;
 import ru.job4j.todo.service.task.TaskService;
 
 
@@ -28,24 +31,13 @@ public class TaskController {
 
     @GetMapping("/new")
     public String getCreateForm(Model model) {
-        model.addAttribute("task", new TaskDto());
+        model.addAttribute("task", new TaskCreateDto());
         return "tasks/task-form";
     }
 
-    @GetMapping("/{id}/edit")
-    public String getEditForm(@PathVariable("id") Long id, Model model) {
-        Optional<TaskDto> task = service.findById(id);
-        if (task.isEmpty()) {
-            model.addAttribute("error", "Task not found.");
-            return "redirect:/error/404";
-        }
-        model.addAttribute("task", task.get());
-        return "tasks/task-edit";
-    }
-
     @PostMapping
-    public String create(@ModelAttribute TaskDto task, Model model) {
-        Optional<TaskDto> created = service.save(task);
+    public String create(@ModelAttribute TaskCreateDto task, @SessionAttribute UserSessionDto user, Model model) {
+        Optional<TaskListingDto> created = service.save(task, user);
         log.infof("created: %s", created);
         if (created.isEmpty()) {
             model.addAttribute("error", "Something went wrong. Please try again.");
@@ -63,6 +55,17 @@ public class TaskController {
         }
         model.addAttribute("task", task.get());
         return "tasks/task-detail";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String getEditForm(@PathVariable("id") Long id, Model model) {
+        Optional<TaskDto> task = service.findById(id);
+        if (task.isEmpty()) {
+            model.addAttribute("error", "Task not found.");
+            return "redirect:/error/404";
+        }
+        model.addAttribute("task", task.get());
+        return "tasks/task-edit";
     }
 
     @PatchMapping("/{id}/complete")
@@ -86,9 +89,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/update")
-    public String update(@PathVariable Long id, @ModelAttribute TaskDto task, Model model) {
+    public String update(@PathVariable Long id, @ModelAttribute TaskDto task, @SessionAttribute UserSessionDto user, Model model) {
         log.warnf("before update: %s", task);
-        boolean updated = service.update(task);
+        boolean updated = service.update(task, user);
         if (!updated) {
             model.addAttribute("error", "Task not found.");
             return "redirect:/error/404";

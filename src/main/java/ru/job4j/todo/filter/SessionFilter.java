@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.job4j.todo.dto.UserDto;
+import ru.job4j.todo.dto.user.UserSessionDto;
 
 import java.io.IOException;
 
@@ -24,9 +24,9 @@ public class SessionFilter extends HttpFilter {
     }
 
     private void addUserToSession(HttpSession session, HttpServletRequest request) {
-        UserDto user = (UserDto) session.getAttribute("user");
+        UserSessionDto user = (UserSessionDto) session.getAttribute("user");
         if (user == null) {
-            user = new UserDto();
+            user = new UserSessionDto();
             user.setName("Guest");
         }
         request.setAttribute("user", user);

@@ -1,4 +1,4 @@
-package ru.job4j.todo.dto;
+package ru.job4j.todo.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class UserDto {
+public class UserLoginDto {
     @EqualsAndHashCode.Include
-    private Long id;
-    private String name;
     private String email;
     private String password;
 }

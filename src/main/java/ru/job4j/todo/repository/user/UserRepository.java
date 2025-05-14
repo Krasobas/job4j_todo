@@ -11,4 +11,6 @@ public interface UserRepository {
     Optional<User> findByEmailAndPassword(String email, String password);
 
     boolean deleteById(int id);
+
+    Optional<User> findById(Long id);
 }

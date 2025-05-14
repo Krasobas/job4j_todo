@@ -55,4 +55,18 @@ public class HibernateUserRepository implements UserRepository {
         }
         return false;
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        try {
+            return crudRepository.optional(
+                    "FROM User WHERE id = :fId",
+                    User.class,
+                    Map.of("fId", id)
+            );
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
 }

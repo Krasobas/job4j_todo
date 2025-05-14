@@ -1,21 +1,24 @@
 package ru.job4j.todo.service.task;
 
-import ru.job4j.todo.dto.TaskDto;
+import ru.job4j.todo.dto.task.TaskCreateDto;
+import ru.job4j.todo.dto.task.TaskDto;
+import ru.job4j.todo.dto.task.TaskListingDto;
+import ru.job4j.todo.dto.user.UserSessionDto;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
 
-    Collection<TaskDto> listAll();
+    List<TaskListingDto> listAll();
 
-    Collection<TaskDto> listAll(String filter);
+    List<TaskListingDto> listAll(String filter);
 
-    Optional<TaskDto> save(TaskDto taskDto);
+    Optional<TaskListingDto> save(TaskCreateDto taskDto, UserSessionDto user);
 
     Optional<TaskDto> findById(Long id);
 
-    boolean update(TaskDto taskDto);
+    boolean update(TaskDto taskDto, UserSessionDto user);
 
     boolean setCompleted(Long id, boolean completed);
 

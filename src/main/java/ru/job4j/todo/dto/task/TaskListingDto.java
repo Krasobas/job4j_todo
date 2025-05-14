@@ -1,4 +1,4 @@
-package ru.job4j.todo.dto;
+package ru.job4j.todo.dto.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TaskDto {
+public class TaskListingDto {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    private String description;
     private LocalDateTime created;
     private boolean completed = false;
+    private String userName;
 
     public boolean getCompleted() {
         return completed;

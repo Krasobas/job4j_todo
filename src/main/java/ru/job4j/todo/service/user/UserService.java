@@ -1,11 +1,15 @@
 package ru.job4j.todo.service.user;
 
-import ru.job4j.todo.dto.UserDto;
+import ru.job4j.todo.dto.user.UserCreateDto;
+import ru.job4j.todo.dto.user.UserSessionDto;
+import ru.job4j.todo.model.User;
 
 import java.util.Optional;
 
 public interface UserService {
-    boolean save(UserDto user);
+    boolean save(UserCreateDto user);
 
-    Optional<UserDto> findByEmailAndPassword(String email, String password);
+    Optional<UserSessionDto> findByEmailAndPassword(String email, String password);
+
+    Optional<User> findById(Long id);
 }
