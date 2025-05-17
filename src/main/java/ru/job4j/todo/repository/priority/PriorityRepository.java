@@ -6,7 +6,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface PriorityRepository {
+
     Collection<Priority> findAll();
+
     Optional<Priority> findByName(String name);
+
     Optional<Priority> findById(Long id);
 }

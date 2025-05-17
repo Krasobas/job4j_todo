@@ -6,7 +6,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface PriorityService {
+
     Collection<String> listAll();
+
     Optional<Priority> getByName(String name);
+
     Optional<Priority> getById(Long id);
 }
