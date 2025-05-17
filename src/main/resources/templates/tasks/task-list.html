@@ -6,22 +6,7 @@
     <title>Task Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        .task-status {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.25rem;
-        }
-        .status-new {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .status-completed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-    </style>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
 <div class="container py-4">
@@ -51,6 +36,7 @@
                         <th>Task Name</th>
                         <th>Owner</th>
                         <th>Created</th>
+                        <th>Priority</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -66,10 +52,15 @@
                         <td th:text="${task.userName}">User</td>
                         <td th:text="${#temporals.format(task.created, 'yyyy-MM-dd')}">2025-05-07</td>
                         <td>
-                                    <span class="task-status" th:classappend="${task.completed} ? 'status-completed' : 'status-new'"
-                                          th:text="${task.completed} ? 'Completed' : 'New'">
-                                        New
-                                    </span>
+                            <span th:replace="~{components/priority :: priority(value=${task.priority})}">
+                                Priority
+                            </span>
+                        </td>
+                        <td>
+                            <span class="task-status" th:classappend="${task.completed} ? 'status-completed' : 'status-new'"
+                                  th:text="${task.completed} ? 'Completed' : 'New'">
+                                New
+                            </span>
                         </td>
                         <td>
                             <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-sm btn-outline-primary">

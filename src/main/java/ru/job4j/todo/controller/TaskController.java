@@ -9,6 +9,7 @@ import ru.job4j.todo.dto.task.TaskCreateDto;
 import ru.job4j.todo.dto.task.TaskDto;
 import ru.job4j.todo.dto.task.TaskListingDto;
 import ru.job4j.todo.dto.user.UserSessionDto;
+import ru.job4j.todo.service.priority.PriorityService;
 import ru.job4j.todo.service.task.TaskService;
 
 
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class TaskController {
 
     private final TaskService service;
+    private final PriorityService priorityService;
 
     @GetMapping
     public String getAll(@RequestParam(name = "filter", required = false) String filter, Model model) {
@@ -32,6 +34,7 @@ public class TaskController {
     @GetMapping("/new")
     public String getCreateForm(Model model) {
         model.addAttribute("task", new TaskCreateDto());
+        model.addAttribute("priorities", priorityService.listAll());
         return "tasks/task-form";
     }
 
@@ -65,6 +68,7 @@ public class TaskController {
             return "redirect:/error/404";
         }
         model.addAttribute("task", task.get());
+        model.addAttribute("priorities", priorityService.listAll());
         return "tasks/task-edit";
     }
 

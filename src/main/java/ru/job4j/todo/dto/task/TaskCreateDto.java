@@ -13,4 +13,5 @@ public class TaskCreateDto {
     @EqualsAndHashCode.Include
     private String name;
     private String description;
+    private String priority;
 }

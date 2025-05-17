@@ -28,4 +28,8 @@ public class Task {
     public boolean getCompleted() {
         return completed;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority_id")
+    private Priority priority;
 }

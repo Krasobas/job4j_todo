@@ -18,6 +18,7 @@ public class TaskDto {
     private String description;
     private LocalDateTime created;
     private boolean completed = false;
+    private String priority;
 
     public boolean getCompleted() {
         return completed;

@@ -18,6 +18,7 @@ public class TaskListingDto {
     private LocalDateTime created;
     private boolean completed = false;
     private String userName;
+    private String priority;
 
     public boolean getCompleted() {
         return completed;
