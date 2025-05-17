@@ -1,4 +1,4 @@
-<span class="task-priority" th:fragment="priority(value)" th:switch="${value}">
+<span th:fragment="priority(value)" th:switch="${value}">
     <span th:case="'urgent'"
           class="task-priority priority-urgent"
           th:text="'Urgent'">
