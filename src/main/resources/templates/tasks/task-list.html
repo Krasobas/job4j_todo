@@ -36,30 +36,38 @@
                         <th>Task Name</th>
                         <th>Owner</th>
                         <th>Created</th>
+                        <th>Categories</th>
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- If no tasks are found -->
                     <tr th:if="${tasks.empty}">
                         <td colspan="4" class="text-center py-4 text-muted">No tasks found</td>
                     </tr>
-                    <!-- Iterate through tasks -->
                     <tr th:each="task : ${tasks}">
                         <td th:text="${task.name}">Sample Task</td>
                         <td th:text="${task.userName}">User</td>
                         <td th:text="${#temporals.format(task.created, 'yyyy-MM-dd')}">2025-05-07</td>
+                        <td class="w-25">
+                            <div class="d-flex flex-wrap gap-1">
+                                <div th:each="category : ${task.categories}">
+                                    <span class="task-category" th:attr="task-category=${category}">
+                                        <span th:text="${category}">Category</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
                         <td>
-                            <span th:replace="~{components/priority :: priority(value=${task.priority})}">
-                                Priority
+                            <span class="task-priority" th:attr="task-priority=${task.priority}">
+                                <span th:text="${task.priority}">Priority</span>
                             </span>
                         </td>
                         <td>
                             <span class="task-status" th:classappend="${task.completed} ? 'status-completed' : 'status-new'"
-                                  th:text="${task.completed} ? 'Completed' : 'New'">
-                                New
+                                  th:text="${task.completed} ? 'completed' : 'new'">
+                                Status
                             </span>
                         </td>
                         <td>

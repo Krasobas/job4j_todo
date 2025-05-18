@@ -8,13 +8,16 @@ import ru.job4j.todo.dto.task.TaskDto;
 import ru.job4j.todo.dto.task.TaskListingDto;
 import ru.job4j.todo.dto.user.UserSessionDto;
 import ru.job4j.todo.mapstruct.TaskMapper;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.task.TaskRepository;
+import ru.job4j.todo.service.category.CategoryService;
 import ru.job4j.todo.service.priority.PriorityService;
 import ru.job4j.todo.service.user.UserService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +30,7 @@ public class SimpleTaskService implements TaskService {
     private final TaskMapper mapper;
     private final UserService userService;
     private final PriorityService priorityService;
+    private final CategoryService categoryService;
 
     @Override
     public List<TaskListingDto> listAll() {
@@ -60,7 +64,8 @@ public class SimpleTaskService implements TaskService {
             log.error("Priority not found");
             return Optional.empty();
         }
-        Task entity = mapper.getEntityOnCreate(taskDto, userEntity.get(), priorityEntity.get());
+        Collection<Category> categories = categoryService.getByName(taskDto.getCategories());
+        Task entity = mapper.getEntityOnCreate(taskDto, userEntity.get(), priorityEntity.get(), categories);
         return repository.save(entity)
                 .map(mapper::getListingDto);
     }
@@ -83,7 +88,8 @@ public class SimpleTaskService implements TaskService {
             log.error("Priority not found");
             return false;
         }
-        Task entity = mapper.getEntityOnUpdate(taskDto, userEntity.get(), priorityEntity.get());
+        Collection<Category> categories = categoryService.getByName(taskDto.getCategories());
+        Task entity = mapper.getEntityOnUpdate(taskDto, userEntity.get(), priorityEntity.get(), categories);
         return repository.update(entity);
     }
 

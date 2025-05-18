@@ -1,4 +1,4 @@
-.task-status, .task-priority  {
+.task-status, .task-priority, .task-category {
     display: inline-block;
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
@@ -13,17 +13,17 @@
     color: #155724;
 }
 
-.priority-low {
+.priority-low, .label-btn[task-priority="low"], .task-priority[task-priority="low"] {
     background-color: #d4edda;
     color: #155724;
 }
 
-.priority-normal {
+.priority-normal, .label-btn[task-priority="normal"], .task-priority[task-priority="normal"] {
     background-color: #fff3cd;
     color: #856404;
 }
 
-.priority-urgent {
+.priority-urgent, .label-btn[task-priority="urgent"], .task-priority[task-priority="urgent"] {
     background-color: #f8d7da;
     color: #721c24;
 }
@@ -33,6 +33,69 @@
     border-bottom-right-radius: 0;
 }
 
-th, td {
-    vertical-align: middle;
+
+.label-btn {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    transition: all 0.2s ease-in-out;
 }
+
+.label-btn[task-category="work"], .task-category[task-category="work"] {
+    background-color: #d6e4ff;
+    color: #0d47a1;
+}
+.label-btn[task-category="home"], .task-category[task-category="home"] {
+    background-color: #d9fdd3;
+    color: #1b5e20;
+}
+.label-btn[task-category="family"], .task-category[task-category="family"] {
+    background-color: #ffd6d6;
+    color: #800000;
+}
+.label-btn[task-category="health"], .task-category[task-category="health"] {
+    background-color: #fff3cd;
+    color: #856404;
+}
+.label-btn[task-category="finance"], .task-category[task-category="finance"] {
+    background-color: #ede7f6;
+    color: #4a148c;
+}
+.label-btn[task-category="learning"], .task-category[task-category="learning"] {
+    background-color: #d0f0f9;
+    color: #006064;
+}
+.label-btn[task-category="social"], .task-category[task-category="social"] {
+    background-color: #ffe0b2;
+    color: #e65100;
+}
+.label-btn[task-category="hobbies"], .task-category[task-category="hobbies"] {
+    background-color: #f3e5f5;
+    color: #6a1b9a;
+}
+
+
+.label-btn:hover {
+    filter: brightness(0.95);
+    opacity: 1;
+}
+
+.label-btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+input.btn-check:checked + .label-btn {
+    border: 1px solid #212529;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.1s ease-in-out;
+}
+
+

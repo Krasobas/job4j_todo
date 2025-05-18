@@ -32,7 +32,7 @@ public class HibernateTaskRepository implements TaskRepository {
     public Optional<Task> findById(Long id) {
         try {
             return crudRepository.optional(
-                    "FROM Task t JOIN FETCH t.priority WHERE t.id = :fId",
+                    "SELECT DISTINCT t FROM Task t JOIN FETCH t.priority LEFT JOIN FETCH t.categories WHERE t.id = :fId",
                     Task.class,
                     Map.of("fId", id)
             );
@@ -46,7 +46,7 @@ public class HibernateTaskRepository implements TaskRepository {
     public Collection<Task> findAll() {
         try {
             return crudRepository.query(
-                    "FROM Task t JOIN FETCH t.priority ORDER BY t.completed ASC, t.priority.position ASC, t.created ASC, t.name ASC",
+                    "SELECT DISTINCT t FROM Task t JOIN FETCH t.priority LEFT JOIN FETCH t.categories ORDER BY t.completed ASC, t.priority.position ASC, t.created ASC, t.name ASC",
                     Task.class);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -58,7 +58,7 @@ public class HibernateTaskRepository implements TaskRepository {
     public Collection<Task> findByCompleted(boolean completed) {
         try {
             return crudRepository.query(
-                    "FROM Task t JOIN FETCH t.priority WHERE t.completed = :fCompleted ORDER BY t.priority.position ASC, t.created ASC, t.name ASC",
+                    "SELECT DISTINCT t FROM Task t JOIN FETCH t.priority LEFT JOIN FETCH t.categories WHERE t.completed = :fCompleted ORDER BY t.priority.position ASC, t.created ASC, t.name ASC",
                     Task.class,
                     Map.of("fCompleted", completed)
             );
@@ -71,16 +71,12 @@ public class HibernateTaskRepository implements TaskRepository {
     @Override
     public boolean update(Task task) {
         try {
-            return crudRepository.run(
-                    "UPDATE Task SET name = :fName, description = :fDescription, completed = :fCompleted, priority = :fPriority WHERE id = :fId",
-                    Map.of(
-                            "fName", task.getName(),
-                            "fDescription", task.getDescription(),
-                            "fCompleted", task.getCompleted(),
-                            "fPriority", task.getPriority(),
-                            "fId", task.getId()
-                    )
-            ) > 0;
+            return findById(task.getId())
+                    .map(origin -> {
+                        origin.update(task);
+                        crudRepository.run(session -> session.update(origin));
+                        return origin;
+                    }).isPresent();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

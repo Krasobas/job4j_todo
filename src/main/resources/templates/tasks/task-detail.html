@@ -16,11 +16,11 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="h5 mb-0" th:text="${task.name}">Task Name</h2>
             <div class="d-flex gap-2 ms-auto align-items-center justify-content-center">
-                <span th:replace="~{components/priority :: priority(value=${task.priority})}">
-                    Priority
+                <span class="task-priority" th:attr="task-priority=${task.priority}">
+                    <span th:text="${task.priority}">Priority</span>
                 </span>
                 <span class="task-status" th:classappend="${task.completed} ? 'status-completed' : 'status-new'"
-                      th:text="${task.completed} ? 'Completed' : 'New'">
+                      th:text="${task.completed} ? 'completed' : 'new'">
                     Status
                 </span>
             </div>
@@ -33,6 +33,13 @@
             <div class="mb-4">
                 <h3 class="h6">Description</h3>
                 <p th:text="${task.description}" class="mb-0">Task description goes here...</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <div th:each="category : ${task.categories}">
+                    <span class="task-category" th:attr="task-category=${category}">
+                        <span th:text="${category}">Category</span>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="card-footer">

@@ -29,16 +29,44 @@
                     <textarea class="form-control" id="description" rows="5" th:field="*{description}"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="priority" class="form-label">Priority</label>
-                    <select class="form-select" id="priority" th:field="*{priority}">
-                        <option th:each="priority : ${priorities}"
-                                th:value="${priority}"
-                                th:selected="${task.priority != null && priority == task.priority}">
-                            <span th:replace="~{components/priority :: priority(value=${priority})}">
-                                Priority
-                            </span>
-                        </option>
-                    </select>
+                    <label class="form-label">Priority</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div th:each="priority : ${priorities}">
+                            <input type="radio"
+                                   class="btn-check"
+                                   th:id="'priority_' + ${priority}"
+                                   name="priority"
+                                   th:value="${priority}"
+                                   th:checked="${task.priority != null and task.priority == priority}"
+                                   autocomplete="off">
+
+                            <label class="label-btn"
+                                   th:for="'priority_' + ${priority}"
+                                   th:attr="task-priority=${priority}">
+                                <span th:text="${priority}">Priority</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="categories" class="form-label">Categories</label>
+                    <div id="categories" class="d-flex flex-wrap gap-2">
+                        <div th:each="category : ${categories}">
+                            <input type="checkbox"
+                                   class="btn-check"
+                                   th:id="'category_' + ${category}"
+                                   name="categories"
+                                   th:value="${category}"
+                                   autocomplete="off"
+                                   th:checked="${task.categories.contains(category)}" />
+
+                            <label class="label-btn"
+                                   th:attr="task-category=${category}"
+                                   th:for="'category_' + ${category}">
+                                <span th:text="${category}">Category</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="completed" th:field="*{completed}">

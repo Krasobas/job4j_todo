@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +17,5 @@ public class TaskCreateDto {
     private String name;
     private String description;
     private String priority;
+    private List<String> categories = new ArrayList<>();
 }
