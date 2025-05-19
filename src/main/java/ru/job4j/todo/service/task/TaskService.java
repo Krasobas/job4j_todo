@@ -10,13 +10,13 @@ import java.util.Optional;
 
 public interface TaskService {
 
-    List<TaskListingDto> listAll();
+    List<TaskListingDto> listAll(UserSessionDto user);
 
-    List<TaskListingDto> listAll(String filter);
+    List<TaskListingDto> listAll(String filter, UserSessionDto user);
 
     Optional<TaskListingDto> save(TaskCreateDto taskDto, UserSessionDto user);
 
-    Optional<TaskDto> findById(Long id);
+    Optional<TaskDto> findById(Long id, UserSessionDto user);
 
     boolean update(TaskDto taskDto, UserSessionDto user);
 

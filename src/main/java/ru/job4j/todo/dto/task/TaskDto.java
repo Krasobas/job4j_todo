@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class TaskDto {
     private Long id;
     private String name;
     private String description;
-    private LocalDateTime created;
+    private ZonedDateTime created;
     private boolean completed = false;
     private String priority;
     private List<String> categories = new ArrayList<>();

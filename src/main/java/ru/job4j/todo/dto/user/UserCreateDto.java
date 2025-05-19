@@ -15,4 +15,5 @@ public class UserCreateDto {
     @EqualsAndHashCode.Include
     private String email;
     private String password;
+    private String timeZone;
 }

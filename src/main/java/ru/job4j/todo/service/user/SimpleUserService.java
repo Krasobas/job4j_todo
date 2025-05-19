@@ -1,6 +1,7 @@
 package ru.job4j.todo.service.user;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.jbosslog.JBossLog;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.dto.user.UserCreateDto;
 import ru.job4j.todo.dto.user.UserSessionDto;
@@ -10,6 +11,7 @@ import ru.job4j.todo.repository.user.UserRepository;
 
 import java.util.Optional;
 
+@JBossLog
 @Service
 @AllArgsConstructor
 public class SimpleUserService implements UserService {

@@ -27,8 +27,8 @@ public class TaskController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public String getAll(@RequestParam(name = "filter", required = false) String filter, Model model) {
-        model.addAttribute("tasks", service.listAll(filter))
+    public String getAll(@RequestParam(name = "filter", required = false) String filter, @SessionAttribute UserSessionDto user, Model model) {
+        model.addAttribute("tasks", service.listAll(filter, user))
             .addAttribute("filter", filter);
         return "tasks/task-list";
     }
@@ -53,8 +53,8 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public String getById(@PathVariable("id") Long id, Model model) {
-        Optional<TaskDto> task = service.findById(id);
+    public String getById(@PathVariable("id") Long id, @SessionAttribute UserSessionDto user, Model model) {
+        Optional<TaskDto> task = service.findById(id, user);
         if (task.isEmpty()) {
             model.addAttribute("error", "Task not found.");
             return "redirect:/error/404";
@@ -64,8 +64,8 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/edit")
-    public String getEditForm(@PathVariable("id") Long id, Model model) {
-        Optional<TaskDto> task = service.findById(id);
+    public String getEditForm(@PathVariable("id") Long id, @SessionAttribute UserSessionDto user, Model model) {
+        Optional<TaskDto> task = service.findById(id, user);
         if (task.isEmpty()) {
             model.addAttribute("error", "Task not found.");
             return "redirect:/error/404";

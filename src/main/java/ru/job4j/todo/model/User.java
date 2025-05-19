@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.TimeZone;
 
 @Data
 @Entity
@@ -21,4 +22,6 @@ public class User {
     private String name;
     private String email;
     private String password;
+    @Column(name = "timezone")
+    private String timeZone = TimeZone.getDefault().getDisplayName();
 }

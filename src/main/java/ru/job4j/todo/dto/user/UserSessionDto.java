@@ -14,4 +14,5 @@ public class UserSessionDto {
     private Long id;
     private String name;
     private String email;
+    private String timeZone;
 }

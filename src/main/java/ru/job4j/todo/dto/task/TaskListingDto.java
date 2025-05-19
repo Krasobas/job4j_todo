@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class TaskListingDto {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    private LocalDateTime created;
+    private ZonedDateTime created;
     private boolean completed = false;
     private String userName;
     private String priority;

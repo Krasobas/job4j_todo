@@ -33,22 +33,22 @@ public class SimpleTaskService implements TaskService {
     private final CategoryService categoryService;
 
     @Override
-    public List<TaskListingDto> listAll() {
+    public List<TaskListingDto> listAll(UserSessionDto user) {
 
         return repository.findAll()
                 .stream()
-                .map(mapper::getListingDto)
+                .map(task -> mapper.getListingDto(task, user))
                 .toList();
     }
 
     @Override
-    public List<TaskListingDto> listAll(String filter) {
+    public List<TaskListingDto> listAll(String filter, UserSessionDto user) {
         if (Objects.isNull(filter) || filter.isBlank() || "all".equals(filter)) {
-            return listAll();
+            return listAll(user);
         }
         return repository.findByCompleted("completed".equals(filter))
                 .stream()
-                .map(mapper::getListingDto)
+                .map(task -> mapper.getListingDto(task, user))
                 .toList();
     }
 
@@ -67,13 +67,13 @@ public class SimpleTaskService implements TaskService {
         Collection<Category> categories = categoryService.getByName(taskDto.getCategories());
         Task entity = mapper.getEntityOnCreate(taskDto, userEntity.get(), priorityEntity.get(), categories);
         return repository.save(entity)
-                .map(mapper::getListingDto);
+                .map(task -> mapper.getListingDto(task, user));
     }
 
     @Override
-    public Optional<TaskDto> findById(Long id) {
+    public Optional<TaskDto> findById(Long id, UserSessionDto user) {
         return repository.findById(id)
-                .map(mapper::getDto);
+                .map(task -> mapper.getDto(task, user));
     }
 
     @Override
